@@ -18,7 +18,7 @@ const BlogPost = () => {
               height={40}
               className={styles.avatar}
             /> */}
-            <span className={styles.username}>username</span>
+            <span className={styles.username}>Username</span>
           </div>
         </div>
         <div className={styles.imageContainer}>
