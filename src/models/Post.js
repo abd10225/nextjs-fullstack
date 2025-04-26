@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { unique } from "next/dist/build/utils";
 
 const { Schema } = mongoose;
 
@@ -26,4 +25,6 @@ const postSchema = new Schema({
     },
 }, {timestamps: true});
 
-export default mongoose.model("Post", postSchema);
+// Prevent model overwrite error during hot reloads
+const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
+export default Post;

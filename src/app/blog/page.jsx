@@ -4,7 +4,7 @@ import Link from 'next/link'
 import next from 'next'
 
 async function getData() {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts', { cache: "no-store" });
+  const res = await fetch('http://localhost:3000/api/posts', { cache: "no-store" });
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -16,7 +16,7 @@ const Blog = async () => {
   return (
     <div className={styles.mainContainer}>
       {data?.map((item) => ( // Use optional chaining to avoid errors if data is undefined
-        <Link href={`blog/${item.id}`} className={styles.container} key={item.id}>
+        <Link href={`blog/${item._id}`} className={styles.container} key={item.id}>
           <div className={styles.imageContainer}>
             {/* <Image */}
             <p>{item.title}</p> {/* Display the title for testing */}
