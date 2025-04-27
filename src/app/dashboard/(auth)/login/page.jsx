@@ -17,12 +17,14 @@ const Login = ({ url }) => {
     setSuccess(params.get("success"));
   }, [params]);
 
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router?.push("/dashboard");
+    }
+  }, [session.status, router]);
+
   if (session.status === "loading") {
     return <p>Loading...</p>;
-  }
-
-  if (session.status === "authenticated") {
-    router?.push("/dashboard");
   }
 
   const handleSubmit = (e) => {

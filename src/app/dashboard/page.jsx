@@ -36,7 +36,7 @@ const Dashboard = () => {
   const { data: session, status } = useSession();
 
   const router = useRouter();
-  
+
   //NEW WAY TO FETCH DATA
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
           desc,
           img,
           content,
-          username: session.data.user.name,
+          username: session?.user?.name,
         }),
       });
       mutate();
@@ -98,7 +98,12 @@ const Dashboard = () => {
             : data?.map((post) => (
                 <div className={styles.post} key={post._id}>
                   <div className={styles.imgContainer}>
-                    <Image src={post.img} alt="" width={200} height={100} />
+                    <Image
+                      src={post.img && post.img.startsWith('http') ? post.img : '/placeholder.jpg'}
+                      alt=""
+                      width={200}
+                      height={100}
+                    />
                   </div>
                   <h2 className={styles.postTitle}>{post.title}</h2>
                   <span
