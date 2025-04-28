@@ -1,58 +1,214 @@
 .container {
-    display: flex;
-    gap: 100px;
-  }
-  
-  .posts {
-    flex: 1;
-  }
-  
-  .post {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 50px 0px;
-  }
-  
-  .imgContainer {
-    width: 200px;
-    height: 100px;
-    position: Ū;
-  }
-  
-  .img {
-    object-fit: cover;
-  }
-  
-  .delete {
-    cursor: pointer;
-    color: red;
+  display: flex;
+  gap: 60px;
+  padding: 60px 5%;
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, var(--bg) 0%, var(--softBg) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(83,194,139,0.1) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.posts {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.post {
+  background-color: var(--softBg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid rgba(83, 194, 139, 0.1);
+}
+
+.post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(83, 194, 139, 0.3);
+}
+
+.imgContainer {
+  width: 100%;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+.post:hover .img {
+  transform: scale(1.05);
+}
+
+.postContent {
+  padding: 24px;
+}
+
+.postTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--textColor);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.postDesc {
+  font-size: 15px;
+  color: var(--softTextColor);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(255, 77, 79, 0.9);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.2);
+}
+
+.deleteButton:hover {
+  background-color: #ff7875;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 77, 79, 0.3);
+}
+
+.deleteButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.new {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px;
+  background-color: var(--softBg);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  height: fit-content;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(83, 194, 139, 0.1);
+}
+
+.new h1 {
+  font-size: 28px;
+  color: var(--textColor);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.input,
+.textArea {
+  padding: 14px 18px;
+  background-color: var(--bg);
+  border: 1px solid rgba(83, 194, 139, 0.2);
+  border-radius: 8px;
+  color: var(--textColor);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input:focus,
+.textArea:focus {
+  outline: none;
+  border-color: #53c28b;
+  box-shadow: 0 0 0 3px rgba(83, 194, 139, 0.1);
+}
+
+.button {
+  padding: 14px 24px;
+  background-color: #53c28b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(83, 194, 139, 0.2);
+}
+
+.button:hover {
+  background-color: #3da876;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(83, 194, 139, 0.3);
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 5%;
   }
   
   .new {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    max-width: 100%;
+    padding: 30px;
   }
   
-  .input,
-  .textArea {
+  .posts {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 30px 4%;
+  }
+  
+  .posts {
+    grid-template-columns: 1fr;
     padding: 10px;
-    background-color: transparent;
-    border: 2px solid #bbb;
-    border-radius: 3px;
-    color: #bbb;
-    font-size: 20px;
-    font-weight: bold;
   }
   
-  .button {
-    padding: 20px;
-    cursor: pointer;
-    background-color: #53c28b;
-    border: none;
-    border-radius: 5px;
-    color: #eee;
-    font-weight: bold;
+  .new {
+    padding: 24px;
   }
+  
+  .postTitle {
+    font-size: 18px;
+  }
+  
+  .postDesc {
+    font-size: 14px;
+  }
+}

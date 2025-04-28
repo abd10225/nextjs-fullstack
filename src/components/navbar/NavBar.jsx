@@ -5,6 +5,7 @@ import React from "react";
 import styles from "./navbar.module.css";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const links = [
   {
@@ -32,33 +33,39 @@ const links = [
     title: "Contact",
     url: "/contact",
   },
-  {
-    id: 6,
-    title: "Dashboard",
-    url: "/dashboard",
-  },
 ];
 
 const Navbar = () => {
   const session = useSession();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/dashboard/login");
+  };
 
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>
-        lamamia
+        ContentHUB
       </Link>
       <div className={styles.links}>
-        <DarkModeToggle />
         {links.map((link) => (
           <Link key={link.id} href={link.url} className={styles.link}>
             {link.title}
           </Link>
         ))}
         {session.status === "authenticated" && (
-          <button className={styles.logout} onClick={signOut}>
-            Logout
-          </button>
+          <>
+            <Link href="/dashboard" className={styles.link}>
+              Dashboard
+            </Link>
+            <button className={styles.logout} onClick={handleLogout}>
+              Logout
+            </button>
+          </>
         )}
+        <DarkModeToggle />
       </div>
     </div>
   );

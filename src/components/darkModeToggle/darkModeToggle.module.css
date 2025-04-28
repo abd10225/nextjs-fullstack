@@ -9,16 +9,24 @@
   padding: 2px;
   position: relative;
   cursor: pointer;
+  background-color: var(--softBg);
 }
 
 .icon{
   font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--textColor);
 }
 
 .ball{
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   background-color: #53c28b;
   border-radius: 50%;
   position: absolute;
+  transition: all 0.3s ease;
 }

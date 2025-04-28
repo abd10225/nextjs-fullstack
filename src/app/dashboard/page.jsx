@@ -7,37 +7,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const Dashboard = () => {
-
-  //OLD WAY TO FETCH DATA
-
-  // const [data, setData] = useState([]);
-  // const [err, setErr] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     setIsLoading(true);
-  //     const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
-  //       cache: "no-store",
-  //     });
-
-  //     if (!res.ok) {
-  //       setErr(true);
-  //     }
-
-  //     const data = await res.json()
-
-  //     setData(data);
-  //     setIsLoading(false);
-  //   };
-  //   getData()
-  // }, []);
-
   const { data: session, status } = useSession();
-
   const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  //NEW WAY TO FETCH DATA
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
   const { data, mutate, error, isLoading } = useSWR(
@@ -72,13 +45,15 @@ const Dashboard = () => {
         }),
       });
       mutate();
-      e.target.reset()
+      e.target.reset();
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleDelete = async (id) => {
+    if (isDeleting) return;
+    setIsDeleting(true);
     try {
       await fetch(`/api/posts/${id}`, {
         method: "DELETE",
@@ -86,6 +61,8 @@ const Dashboard = () => {
       mutate();
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -93,40 +70,71 @@ const Dashboard = () => {
     return (
       <div className={styles.container}>
         <div className={styles.posts}>
-          {isLoading
-            ? "loading"
-            : data?.map((post) => (
+          {isLoading ? (
+            <div>Loading posts...</div>
+          ) : data?.length === 0 ? (
+            <div>No posts found. Create your first post!</div>
+          ) : (
+            data?.map((post) => (
                 <div className={styles.post} key={post._id}>
                   <div className={styles.imgContainer}>
                     <Image
                       src={post.img && post.img.startsWith('http') ? post.img : '/placeholder.jpg'}
-                      alt=""
-                      width={200}
-                      height={100}
+                    alt={post.title}
+                    fill
+                    className={styles.img}
                     />
                   </div>
+                <div className={styles.postContent}>
                   <h2 className={styles.postTitle}>{post.title}</h2>
-                  <span
-                    className={styles.delete}
-                    onClick={() => handleDelete(post._id)}
-                  >
-                    X
-                  </span>
+                  <p className={styles.postDesc}>{post.desc}</p>
                 </div>
-              ))}
+                <button
+                  className={styles.deleteButton}
+                    onClick={() => handleDelete(post._id)}
+                  disabled={isDeleting}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 6H5H21"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Delete
+                </button>
+                </div>
+            ))
+          )}
         </div>
         <form className={styles.new} onSubmit={handleSubmit}>
           <h1>Add New Post</h1>
-          <input type="text" placeholder="Title" className={styles.input} />
-          <input type="text" placeholder="Desc" className={styles.input} />
-          <input type="text" placeholder="Image" className={styles.input} />
+          <input type="text" placeholder="Title" className={styles.input} required />
+          <input type="text" placeholder="Description" className={styles.input} required />
+          <input type="text" placeholder="Image URL" className={styles.input} required />
           <textarea
             placeholder="Content"
             className={styles.textArea}
             cols="30"
             rows="10"
+            required
           ></textarea>
-          <button className={styles.button}>Send</button>
+          <button className={styles.button} type="submit">Create Post</button>
         </form>
       </div>
     );

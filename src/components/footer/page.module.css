@@ -1,18 +1,42 @@
 .container {
-    height: 50px;
+    height: 80px;
     font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 5%;
+    background-color: var(--bg);
+    border-top: 1px solid var(--softBg);
+    color: var(--softTextColor);
   }
   
   .social {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
   }
   
   .icon {
-    opacity: 0.6;
+    opacity: 0.7;
     cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .icon:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+  
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      height: auto;
+      padding: 20px 3%;
+      gap: 15px;
+      text-align: center;
+    }
+    
+    .social {
+      justify-content: center;
+    }
   }
