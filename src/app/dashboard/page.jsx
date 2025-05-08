@@ -88,6 +88,9 @@ const Dashboard = () => {
                 <div className={styles.postContent}>
                   <h2 className={styles.postTitle}>{post.title}</h2>
                   <p className={styles.postDesc}>{post.desc}</p>
+                  {/* <p className={styles.postDesc}>{post.content}</p>
+                  <p className={styles.postDesc}>{post.username}</p>
+                  <p className={styles.postDesc}>{post.createdAt}</p> */}
                 </div>
                 <button
                   className={styles.deleteButton}
